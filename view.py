@@ -3,6 +3,7 @@ import serial.tools.list_ports
 import pygame
 import numpy as np
 import time
+import json
 
 
 pygame.init()
@@ -32,6 +33,7 @@ datapoints2 = np.zeros(datalength)
 datapoints3 = np.zeros(datalength)
 x = np.ravel(np.linspace(0,datalength-1, datalength))
 count = 0
+review = list()
 
 run = True
 while run:
@@ -58,6 +60,7 @@ while run:
     tmp = datapoints3.copy()
     datapoints3[0] = H-10-2*int.from_bytes(newpoints[2:3])
     datapoints3[1:] = tmp[:-1]
+    review.append((datapoints1[0], datapoints2[0], datapoints3[0]))
   
 
 
@@ -82,3 +85,6 @@ try:
     port.close()
 except:
     pass
+
+with open("data.json", "w") as f:
+    json.dump(review, f)
